@@ -10,9 +10,10 @@ const PopupAddCourseToStudent = ({
 }) => {
   const handleLinkCourseToStudent = async (courseId) => {
     setCourseToViewAddDelete(courseId);
-    const studentCourse = { studentId: thisStudent._id, courseId };
+    const studentId = thisStudent._id;
+    const studentCourse = { courseId };
 
-    const response = await fetch(`/api/students/addcourse/${thisStudent._id}`, {
+    const response = await fetch(`/api/students/addcourse/${studentId}`, {
       method: "PATCH",
       body: JSON.stringify(studentCourse),
       headers: { "Content-Type": "application/json" },
@@ -20,17 +21,16 @@ const PopupAddCourseToStudent = ({
 
     const json = await response.json();
 
-    console.log(json);
-
     if (!response.ok) {
-      setError(json.error);
-    }
-    if (response.ok) {
+      setError("THIS IS ERROR", json.error);
+    } else {
       setError(null);
       setShowAdd(false);
-      console.log(json, "the course is added to student created");
-
-      studentDispatch({ type: "ADD_COURSE_STUDENT", payload: json });
+      const course = allCourses.find((course) => course._id === courseId);
+      studentDispatch({
+        type: "ADD_COURSE_STUDENT",
+        payload: { studentId, course },
+      });
     }
   };
   return (
@@ -44,7 +44,7 @@ const PopupAddCourseToStudent = ({
         id="courses"
         onChange={(e) => handleLinkCourseToStudent(e.target.value)}
       >
-        <option>Delete a course:</option>
+        <option>Add a course:</option>
         {allCourses &&
           allCourses.map((course) => (
             <option key={course._id} value={course._id}>

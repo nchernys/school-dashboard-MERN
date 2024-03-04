@@ -19,8 +19,11 @@ const createAssignment = async (req, res) => {
 
 // get all assignments
 const getAllAssignments = async (req, res) => {
-  const assignments = await Assignment.find({}).sort({ title: 1 });
+  const assignments = await Assignment.find({});
 
+  if (!assignments) {
+    return res.status(404).json({ error: "No such record exists." });
+  }
   res.status(200).json(assignments);
 };
 

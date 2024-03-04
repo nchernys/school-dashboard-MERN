@@ -87,6 +87,7 @@ const AddCoursesToStudents = () => {
                   <td>
                     {student.courses.map((course) => (
                       <span
+                        className="view-enrollments"
                         key={course._id}
                         onClick={() => handleCourseEnrollments(course._id)}
                       >
@@ -133,6 +134,7 @@ const AddCoursesToStudents = () => {
         setError={setError}
         setCourseToViewAddDelete={setCourseToViewAddDelete}
         handlePopupHide={handlePopupHide}
+        studentDispatch={studentDispatch}
       />
       <PopViewEnrollments
         students={students}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import AddStudentForm from "../components/addStudentForm";
 import PopupUpdateStudent from "../components/popupUpdateStudent";
 import { useStudentsContextHook } from "../context/hooks/useContextHook";
@@ -20,11 +20,12 @@ const Home = () => {
 
       if (response.ok) {
         studentDispatch({ type: "SET_STUDENTS", payload: json });
+      } else {
+        console.error("Error fetching departments:", json.error);
       }
     };
-
     fetchStudents();
-  }, [students]);
+  }, [studentDispatch]);
 
   const handleDeleteStudent = async (studentId) => {
     setThisStudentId(studentId);
@@ -38,8 +39,6 @@ const Home = () => {
     } else {
       console.error("Error fetching departments:", json.error);
     }
-
-    console.log(json);
   };
 
   const handleUpdateStudent = async (studentId) => {

@@ -7,7 +7,6 @@ const Course = require("../models/coursesModels");
 // get all students
 const getAllStudents = async (req, res) => {
   const students = await Student.find({}).sort({ name: 1 }).populate("courses");
-  console.log("Students with Courses:", students);
   res.status(200).json(students);
 };
 
@@ -60,18 +59,23 @@ const deleteStudent = async (req, res) => {
 
 const updateStudent = async (req, res) => {
   const { id } = req.params;
+  const updatedStudent = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "No such student." });
   }
 
-  const student = await Student.findOneAndUpdate({ _id: id }, { ...req.body });
+  const student = await Student.findByIdAndUpdate(id, updatedStudent, {
+    new: true,
+  });
 
   if (!student) {
     return res.status(404).json({ error: "No such record exists." });
   }
 
-  res.status(200).json(student);
+  const studentUpdated = await Student.findById(id).populate("courses");
+
+  res.status(200).json(studentUpdated);
 };
 
 // add courses to student
@@ -108,25 +112,26 @@ const deleteCourseFromStudent = async (req, res) => {
   const { studentId } = req.params;
   const { courseId } = req.body;
 
-  if (
-    !mongoose.Types.ObjectId.isValid(studentId) ||
-    !mongoose.Types.ObjectId.isValid(courseId)
-  ) {
-    return res.status(404).json({ error: "No such student or course." });
+  if (!mongoose.Types.ObjectId.isValid(studentId)) {
+    return res.status(404).json({ error: "No such student." });
+  }
+  if (!mongoose.Types.ObjectId.isValid(courseId)) {
+    return res.status(404).json({
+      error: "No such course.",
+    });
   }
 
   const student = await Student.findById(studentId);
-
   if (!student) {
     return res.status(404).json({ error: "No such record exists." });
   }
+  const courses = student.courses.filter((course) => course._id !== courseId);
 
-  student.courses = student.courses.filter(
-    (course) => course.toString() !== courseId
-  );
+  student.courses = courses;
 
   await student.save();
 
+  console.log(student);
   res.status(200).json(student);
 };
 

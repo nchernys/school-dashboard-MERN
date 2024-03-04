@@ -1,12 +1,17 @@
 const express = require("express");
 require("dotenv").config();
 const mongoose = require("mongoose");
+const path = require("path");
 
 const app = express();
+
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
 const studentsRoutes = require("./routes/studentsRoutes");
 const coursesRoutes = require("./routes/coursesRoutes");
 const departmentsRoutes = require("./routes/departmentsRoutes");
 const assignmentsRoutes = require("./routes/assignmentsRoutes");
+const gradesRoutes = require("./routes/gradesRoutes");
 
 app.use(express.json());
 
@@ -19,6 +24,11 @@ app.use("/api/students", studentsRoutes);
 app.use("/api/courses", coursesRoutes);
 app.use("/api/departments", departmentsRoutes);
 app.use("/api/assignments", assignmentsRoutes);
+app.use("/api/grades", gradesRoutes);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+});
 
 mongoose
   .connect(process.env.MONGO_URI)

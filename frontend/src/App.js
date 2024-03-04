@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Nav from "./components/Nav";
 import AddCoursesToStudents from "./pages/addCoursesToStudents";
 import ManageCourses from "./pages/manageCourses";
+import ManageCourseAssignments from "./pages/manageCourseAssignments";
 
 function MainApp() {
   return (
@@ -17,6 +18,10 @@ function MainApp() {
               element={<AddCoursesToStudents />}
             />
             <Route path="/manage-courses" element={<ManageCourses />} />
+            <Route
+              path="/manage-assignments"
+              element={<ManageCourseAssignments />}
+            />
           </Routes>
         </div>
       </BrowserRouter>

@@ -33,7 +33,7 @@ const AddStudentForm = ({
       setYear("");
       setError(null);
       console.log(json, "new student created");
-      studentDispatch({ type: "CREATE_STUDENTS", payload: json });
+      studentDispatch({ type: "CREATE_STUDENT", payload: json });
     }
   };
   return (

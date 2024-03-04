@@ -7,13 +7,19 @@ const PopViewEnrollments = ({
   setCourseToViewAddDelete,
   courseToViewAddDelete,
 }) => {
-  const enrolledStudents = students.filter((student) =>
-    student.courses.some((course) => course._id === courseToViewAddDelete)
-  );
+  let enrolledStudents = [];
+  let courseEnrolled;
+  if (students) {
+    enrolledStudents = students.filter((student) =>
+      student.courses.some((course) => course._id === courseToViewAddDelete)
+    );
+  }
 
-  const courseEnrolled = allCourses.find(
-    (course) => course._id === courseToViewAddDelete
-  );
+  if (allCourses) {
+    courseEnrolled = allCourses.find(
+      (course) => course._id === courseToViewAddDelete
+    );
+  }
 
   return (
     <div
@@ -23,10 +29,12 @@ const PopViewEnrollments = ({
       <div className="close" onClick={handlePopupHide}>
         close
       </div>
-      <h2>{courseEnrolled.title}:</h2>
+      <h2>{courseEnrolled && courseEnrolled.title}:</h2>
       <hr />
       {enrolledStudents &&
-        enrolledStudents.map((student) => <div>{student.name}</div>)}
+        enrolledStudents.map((student) => (
+          <div key={student._id}>{student.name}</div>
+        ))}
     </div>
   );
 };

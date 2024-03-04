@@ -5,6 +5,7 @@ export const SchoolContext = createContext();
 export const coursesReducer = (courseState, action) => {
   switch (action.type) {
     case "SET_COURSES":
+      console.log("DISPATCH SET COURSES");
       return {
         ...courseState,
         allCourses: action.payload,
@@ -71,13 +72,12 @@ export const studentsReducer = (studentState, action) => {
       };
 
     case "ADD_COURSE_STUDENT":
-      const { studentId, courseId } = action.payload;
+      const { studentId, course } = action.payload;
       const updatedStdCoursesArray = studentState.students.map((student) =>
         student._id === studentId
-          ? { ...student, courses: [...student.courses, courseId] }
+          ? { ...student, courses: [...student.courses, course] }
           : student
       );
-
       return {
         ...studentState,
         students: updatedStdCoursesArray,

@@ -27,13 +27,4 @@ router.delete("/:id", deleteAssignment);
 // update a assignment
 router.patch("/:id", updateAssignment);
 
-// get all assignments by course
-router.get("/course/:id", getAllAssignmentsByCourse);
-
-// get all grades by student per assignment
-router.get("/grades/:assignmentId/:StudentId", getAllGradesByStudents);
-
-// post a grade by student per assignment
-router.patch("/grades/:assignmentId/:studentId", assignGrade);
-
 module.exports = router;

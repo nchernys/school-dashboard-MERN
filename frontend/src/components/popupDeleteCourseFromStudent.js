@@ -9,27 +9,26 @@ const PopupDeleteCourseFromStudent = ({
 }) => {
   const handleDeleteCourseFromStudent = async (courseId) => {
     setCourseToViewAddDelete(courseId);
-    const studentCourse = { studentId: thisStudent._id, courseId };
-    const response = await fetch(
-      `/api/students/deletecourse/${thisStudent._id}`,
-      {
-        method: "PATCH",
-        body: JSON.stringify(studentCourse),
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const studentId = thisStudent._id;
+
+    const response = await fetch(`/api/students/deletecourse/${studentId}`, {
+      method: "PATCH",
+      body: JSON.stringify({ courseId }),
+      headers: { "Content-Type": "application/json" },
+    });
 
     const json = await response.json();
+    console.log("JSON", json);
 
-    console.log(json);
     if (!response.ok) {
       setError(json.error);
-    }
-    if (response.ok) {
+    } else {
       setError(null);
       setShowDel(false);
-      console.log(json, "the course is added to student created");
-      studentDispatch({ type: "DROP_COURSE_STUDENT", payload: json });
+      studentDispatch({
+        type: "DROP_COURSE_STUDENT",
+        payload: { studentIdDrop: studentId, courseIdDrop: courseId },
+      });
     }
   };
 

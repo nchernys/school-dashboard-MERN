@@ -165,3 +165,25 @@ form.update-form button {
   right: 1em;
   cursor: pointer;
 }
+
+.view-enrollments {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.view-enrollments:hover {
+  color: var(--add-blue);
+}
+
+.grades table {
+  border-collapse: collapse;
+  width: auto;
+  margin-left: 0;
+}
+
+.grades table tr td {
+  border: 1px var(--dark-gray) solid;
+  padding: 0.5em;
+  font-size: 1em;
+  width: 8em;
+}

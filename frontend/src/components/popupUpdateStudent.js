@@ -31,12 +31,13 @@ const PopupUpdateStudent = ({
       },
       body: JSON.stringify(updatedStudent),
     });
-
     const json = await response.json();
-
     if (!response.ok) {
       console.log(json.error);
     } else {
+      setName("");
+      setYear("");
+      setMajor("");
       studentDispatch({ type: "UPDATE_STUDENT", payload: json });
     }
     setShowPopup(false);
@@ -47,7 +48,7 @@ const PopupUpdateStudent = ({
       <div className="close" onClick={handlePopupHide}>
         close
       </div>
-      <h2>{studentToUpdate.name}:</h2>
+      <h2>{studentToUpdate && studentToUpdate.name}:</h2>
       <form className="update-form" onSubmit={handleUpdateStudent}>
         <input
           type="text"
