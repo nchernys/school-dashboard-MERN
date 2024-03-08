@@ -9,7 +9,9 @@
 html,
 body {
   width: 100%;
+  min-width: 100vw;
   height: 100%;
+  min-height: 100vh;
   padding: 0;
   margin: 0;
   font-size: 16px;
@@ -33,14 +35,25 @@ body {
 }
 
 .pages {
-  width: 80%;
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
   margin: 0 auto;
+  padding: 2em 4em 5em;
+  background: url("../public/images/school_bg.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
 }
 
 .container {
   width: 100%;
+  min-width: 40em;
   margin: 0 auto;
+  padding: 2em 2em 4em;
   position: relative;
+  background-color: rgba(255, 255, 255, 1);
+  box-sizing: border-box;
 }
 
 .forms {
@@ -84,14 +97,18 @@ body {
   cursor: pointer;
 }
 
-form.update-form {
+form.form {
   width: 80%;
   display: flex;
   flex-direction: column;
 }
 
-form.update-form input,
-form.update-form button {
+.form form {
+  margin: 0 0 3em;
+}
+
+form.form input,
+form.form button {
   margin: 0.5em 0;
 }
 
@@ -101,7 +118,7 @@ form.update-form button {
 .form form input,
 .form form select,
 .form form button {
-  margin: 0 0.5em;
+  margin: 0.5em;
   background-color: white;
   border: 1px rgb(200, 200, 200) solid;
   padding: 0.5em;
@@ -123,6 +140,29 @@ form.update-form button {
   box-sizing: border-box;
 }
 
+.scroll {
+  width: 100%;
+  overflow-x: scroll;
+  padding: 1em 1em 3em;
+}
+
+.delete-form-page {
+  width: 100%;
+}
+.delete-form-page select {
+  margin: 0 0.5em;
+  background-color: white;
+  border: 1px rgb(200, 200, 200) solid;
+  padding: 0.5em;
+}
+
+.delete-form-page button {
+  background-color: var(--mid-gray);
+  color: white;
+  padding: 0.5em 1em;
+  border: none;
+}
+
 .popup {
   position: absolute;
   top: 5%;
@@ -140,6 +180,9 @@ form.update-form button {
   color: white;
 }
 
+.popup form.form {
+  border: 3px red solid;
+}
 .popup h2 {
   padding: 0;
   margin: 0.5em 0;

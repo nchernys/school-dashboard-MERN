@@ -33,6 +33,7 @@ const PopupAddCourseToStudent = ({
       });
     }
   };
+
   return (
     <div className="popup" style={{ display: showAdd ? "flex" : "none" }}>
       <div className="close" onClick={handlePopupHide}>

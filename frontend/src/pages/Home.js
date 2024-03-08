@@ -1,9 +1,14 @@
 import { useEffect, useState, useRef } from "react";
+import { Navigate } from "react-router-dom";
 import AddStudentForm from "../components/addStudentForm";
+import LoginPage from "./loginPage";
 import PopupUpdateStudent from "../components/popupUpdateStudent";
 import { useStudentsContextHook } from "../context/hooks/useContextHook";
+import { useAuthorizeContextHook } from "../context/hooks/useContextHook";
+import { useGlobalRoleContextHook } from "../context/hooks/useContextHook";
 
 const Home = () => {
+  const { authorize, authorizeDispatch } = useAuthorizeContextHook();
   const { students, studentDispatch } = useStudentsContextHook();
   const [name, setName] = useState("");
   const [major, setMajor] = useState("");
@@ -55,6 +60,7 @@ const Home = () => {
 
   return (
     <>
+      {!authorize && <Navigate to="/login" />}
       <div className="container">
         <h2>Students</h2>
         <div className="forms">
@@ -98,7 +104,6 @@ const Home = () => {
                 <tr key={student._id}>
                   <td>{student.name}</td> <td> {student.major} </td>
                   <td>
-                    {" "}
                     {student.courses.map((course) => (
                       <div key={course._id}> {course.title} </div>
                     ))}
@@ -109,15 +114,15 @@ const Home = () => {
                       onClick={() => handleUpdateStudent(student._id)}
                     >
                       Update{" "}
-                    </span>{" "}
+                    </span>
                     |
                     <span
                       className="delete-student"
                       onClick={() => handleDeleteStudent(student._id)}
                     >
                       {" "}
-                      Delete{" "}
-                    </span>{" "}
+                      Delete
+                    </span>
                     <br />
                   </td>
                 </tr>

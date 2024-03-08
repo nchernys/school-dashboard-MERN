@@ -49,7 +49,7 @@ const PopupUpdateStudent = ({
         close
       </div>
       <h2>{studentToUpdate && studentToUpdate.name}:</h2>
-      <form className="update-form" onSubmit={handleUpdateStudent}>
+      <form className="form" onSubmit={handleUpdateStudent}>
         <input
           type="text"
           onChange={(e) => {

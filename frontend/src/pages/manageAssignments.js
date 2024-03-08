@@ -1,17 +1,26 @@
 import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import { useStudentsContextHook } from "../context/hooks/useContextHook";
 import { useCoursesContextHook } from "../context/hooks/useContextHook";
+import { useAssignmentsContextHook } from "../context/hooks/useContextHook";
+import { useAuthorizeContextHook } from "../context/hooks/useContextHook";
+import { useGlobalRoleContextHook } from "../context/hooks/useContextHook";
+import AddAssignmentToCourse from "../components/popupAddAssignmentToCourse";
+import LoginPage from "./loginPage";
 
-const ManageCourseAssignments = () => {
+const ManageAssignments = () => {
+  const { authorize, authorizeDispatch } = useAuthorizeContextHook();
   const { students, studentDispatch } = useStudentsContextHook();
   const { allCourses, courseDispatch } = useCoursesContextHook();
-  const [showCourseAssignments, setShowCourseAssignments] = useState([]);
+  const { assignments, assignmentDispatch } = useAssignmentsContextHook();
   const [selectCourse, setSelectCourse] = useState("");
   const [studentsPerCourse, setStudentsPerCourse] = useState([]);
   const [thisCourseGrades, setThisCourseGrades] = useState([]);
   const [collectAssignments, setCollectAssignments] = useState([]);
   const [editableCell, setEditableCell] = useState("false");
   const [averageGrades, setAverageGrades] = useState([]);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -25,7 +34,19 @@ const ManageCourseAssignments = () => {
       }
     };
     fetchCourses();
-  }, []);
+
+    const fetchAssignments = async () => {
+      const response = await fetch("/api/assignments");
+      const json = await response.json();
+
+      if (response.ok) {
+        assignmentDispatch({ type: "SET_ASSIGNMENTS", payload: json });
+      } else {
+        console.error(json);
+      }
+    };
+    fetchAssignments();
+  }, [courseDispatch, studentDispatch, assignmentDispatch]);
 
   const fetchData = async (url) => {
     const response = await fetch(url);
@@ -169,70 +190,86 @@ const ManageCourseAssignments = () => {
     <>
       <h2>Select course: </h2>
       <div className="container grades">
-        <select onChange={(e) => handleSelectCourse(e.target.value)}>
-          <option>Select course:</option>{" "}
-          {allCourses &&
-            allCourses.map((course) => (
-              <option key={course._id} value={course._id}>
-                {course.title}
-              </option>
-            ))}
-        </select>
-        <h2>{selectCourse && selectCourse.title}</h2>
+        <div className="delete-form-page">
+          <select onChange={(e) => handleSelectCourse(e.target.value)}>
+            <option>Select course:</option>
+            {allCourses &&
+              allCourses.map((course) => (
+                <option key={course._id} value={course._id}>
+                  {course.title}
+                </option>
+              ))}
+          </select>
+        </div>
         {selectCourse && (
-          <table>
-            <thead>
-              <tr>
-                <td>STUDENTS & ASSIGNMENTS</td>
-                {collectAssignments &&
-                  collectAssignments.map((assignment) => (
-                    <td key={assignment._id}>{assignment.title}</td>
-                  ))}
-                <td>AVG SCORE</td>
-              </tr>
-            </thead>
-            <tbody>
-              {studentsPerCourse &&
-                studentsPerCourse.map((student) => (
-                  <tr key={student._id}>
-                    <td>{student.name}</td>
-                    {collectAssignments.map((assignment) => (
-                      <td
-                        onClick={() =>
-                          handleEditGrades(student._id, assignment._id)
-                        }
-                        onBlur={(e) =>
-                          handleEditGradeScore(
-                            student._id,
-                            assignment._id,
-                            e.currentTarget.textContent
-                          )
-                        }
-                        key={`${student._id}-${assignment._id}`}
-                        contentEditable={editableCell ? "true" : "false"}
-                      >
-                        {thisCourseGrades.find(
-                          (grade) =>
-                            grade.student === student._id &&
-                            grade.assignment === assignment._id
-                        )?.score || ""}
-                      </td>
-                    ))}
-                    <td>
-                      {averageGrades &&
-                        averageGrades
-                          .filter((avg) => avg.student._id === student._id)
-                          .map((avg) => avg.avgGrade)}
-                      %
-                    </td>
+          <div>
+            <AddAssignmentToCourse
+              title={title}
+              setTitle={setTitle}
+              description={description}
+              setDescription={setDescription}
+              selectCourse={selectCourse}
+              collectAssignments={collectAssignments}
+              assignmentDispatch={assignmentDispatch}
+              handleSelectCourse={handleSelectCourse}
+            />
+            <h2>{selectCourse && selectCourse.title}</h2>
+            <div className="scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <td>STUDENTS & ASSIGNMENTS</td>
+                    {collectAssignments &&
+                      collectAssignments.map((assignment) => (
+                        <td key={assignment._id}>{assignment.title}</td>
+                      ))}
+                    <td>AVG SCORE</td>
                   </tr>
-                ))}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {studentsPerCourse &&
+                    studentsPerCourse.map((student) => (
+                      <tr key={student._id}>
+                        <td>{student.name}</td>
+                        {collectAssignments.map((assignment) => (
+                          <td
+                            onClick={() =>
+                              handleEditGrades(student._id, assignment._id)
+                            }
+                            onBlur={(e) =>
+                              handleEditGradeScore(
+                                student._id,
+                                assignment._id,
+                                e.currentTarget.textContent
+                              )
+                            }
+                            key={`${student._id}-${assignment._id}`}
+                            contentEditable={editableCell ? "true" : "false"}
+                          >
+                            {thisCourseGrades.find(
+                              (grade) =>
+                                grade.student === student._id &&
+                                grade.assignment === assignment._id
+                            )?.score || ""}
+                          </td>
+                        ))}
+                        <td>
+                          {averageGrades &&
+                            averageGrades
+                              .filter((avg) => avg.student._id === student._id)
+                              .map((avg) => avg.avgGrade)}
+                          %
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         )}
       </div>
     </>
   );
 };
 
-export default ManageCourseAssignments;
+export default ManageAssignments;

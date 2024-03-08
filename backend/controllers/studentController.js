@@ -97,13 +97,16 @@ const addCourseToStudent = async (req, res) => {
     return res.status(404).json({ error: "No such record exists." });
   }
 
-  if (!student.courses.includes(courseId)) {
+  const isCourseAlreadyAdded = student.courses.some(
+    (course) => course.toString() === courseId.toString()
+  );
+
+  if (!isCourseAlreadyAdded) {
     student.courses.push(courseId);
     console.log("COURSE PUSHED!");
   }
 
   await student.save();
-  console.log("STUDENT SAVED!");
 
   res.status(200).json(student);
 };
@@ -115,6 +118,7 @@ const deleteCourseFromStudent = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(studentId)) {
     return res.status(404).json({ error: "No such student." });
   }
+
   if (!mongoose.Types.ObjectId.isValid(courseId)) {
     return res.status(404).json({
       error: "No such course.",
@@ -122,16 +126,17 @@ const deleteCourseFromStudent = async (req, res) => {
   }
 
   const student = await Student.findById(studentId);
+
   if (!student) {
     return res.status(404).json({ error: "No such record exists." });
   }
-  const courses = student.courses.filter((course) => course._id !== courseId);
-
+  const courses = student.courses.filter(
+    (course) => course._id.toString() !== courseId.toString()
+  );
   student.courses = courses;
 
   await student.save();
 
-  console.log(student);
   res.status(200).json(student);
 };
 

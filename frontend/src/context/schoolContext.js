@@ -2,10 +2,44 @@ import { createContext, useReducer } from "react";
 
 export const SchoolContext = createContext();
 
+export const authorizeReducer = (authorizeState, action) => {
+  switch (action.type) {
+    case "SET_AUTH":
+      return {
+        authorize: true,
+      };
+    case "REMOVE_AUTH":
+      return {
+        authorize: false,
+      };
+
+    default:
+      return authorizeState;
+  }
+};
+
+export const globalRoleReducer = (globalRoleState, action) => {
+  switch (action.type) {
+    case "CREATE_ROLE":
+      const createGlobalRole = action.payload;
+      return {
+        globalRole: createGlobalRole,
+      };
+
+    case "SET_ROLE":
+      return {
+        ...globalRoleState,
+        globalRole: action.payload,
+      };
+
+    default:
+      return globalRoleState;
+  }
+};
+
 export const coursesReducer = (courseState, action) => {
   switch (action.type) {
     case "SET_COURSES":
-      console.log("DISPATCH SET COURSES");
       return {
         ...courseState,
         allCourses: action.payload,
@@ -41,6 +75,7 @@ export const studentsReducer = (studentState, action) => {
         ...studentState,
         students: action.payload,
       };
+
     case "CREATE_STUDENT":
       const newStudent = action.payload;
       const sortedStudents = [...studentState.students, newStudent].sort(
@@ -75,7 +110,14 @@ export const studentsReducer = (studentState, action) => {
       const { studentId, course } = action.payload;
       const updatedStdCoursesArray = studentState.students.map((student) =>
         student._id === studentId
-          ? { ...student, courses: [...student.courses, course] }
+          ? {
+              ...student,
+              courses: student.courses.some(
+                (existingCourse) => existingCourse._id === course._id
+              )
+                ? [...student.courses]
+                : [...student.courses, course],
+            }
           : student
       );
       return {
@@ -106,6 +148,43 @@ export const studentsReducer = (studentState, action) => {
   }
 };
 
+export const assignmentsReducer = (assignmentState, action) => {
+  switch (action.type) {
+    case "SET_ASSIGNMENTS":
+      return {
+        ...assignmentState,
+        assignments: action.payload,
+      };
+
+    case "CREATE_ASSIGNMENT":
+      const newAssignment = action.payload;
+      const sortedAssignments = [
+        ...assignmentState.assignments,
+        newAssignment,
+      ].sort((a, b) => a.title.localeCompare(b.title));
+
+      console.log("GOT NEW ASSIGNMENT!");
+
+      return {
+        ...assignmentState,
+        assignments: sortedAssignments,
+      };
+
+    case "DELETE_ASSIGNMENT":
+      const assignmentToDelete = action.payload;
+      const updatedAssignments = assignmentState.assignments.filter(
+        (assignment) => assignment._id !== assignmentToDelete
+      );
+      return {
+        ...assignmentState,
+        assignments: updatedAssignments,
+      };
+
+    default:
+      return assignmentState;
+  }
+};
+
 export const SchoolContextProvider = ({ children }) => {
   const [courseState, courseDispatch] = useReducer(coursesReducer, {
     allCourses: null,
@@ -113,10 +192,31 @@ export const SchoolContextProvider = ({ children }) => {
   const [studentState, studentDispatch] = useReducer(studentsReducer, {
     students: null,
   });
+  const [assignmentState, assignmentDispatch] = useReducer(assignmentsReducer, {
+    assignments: null,
+  });
+  const [authorizeState, authorizeDispatch] = useReducer(authorizeReducer, {
+    authorize: null,
+  });
+
+  const [globalRoleState, globalRoleDispatch] = useReducer(globalRoleReducer, {
+    globalRole: null,
+  });
 
   return (
     <SchoolContext.Provider
-      value={{ courseState, courseDispatch, studentState, studentDispatch }}
+      value={{
+        courseState,
+        courseDispatch,
+        studentState,
+        studentDispatch,
+        assignmentState,
+        assignmentDispatch,
+        authorizeState,
+        authorizeDispatch,
+        globalRoleState,
+        globalRoleDispatch,
+      }}
     >
       {children}
     </SchoolContext.Provider>
