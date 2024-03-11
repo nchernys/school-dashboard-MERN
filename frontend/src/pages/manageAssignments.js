@@ -76,7 +76,6 @@ const ManageAssignments = () => {
       ]);
 
       setSelectCourse(course);
-      console.log(course, "THIS COURSE");
 
       const studentsInThisCourse = students.filter((student) =>
         student.courses.some((course) => course._id === courseId)
@@ -95,7 +94,6 @@ const ManageAssignments = () => {
         assignmentIdsInCourse.includes(grade.assignment)
       );
       setThisCourseGrades(collectCourseGrades);
-      console.log("THIS COURSE GRADES", collectCourseGrades);
     } catch (error) {
       console.error("Error in handleSelectCourse:", error);
     }
@@ -188,8 +186,9 @@ const ManageAssignments = () => {
 
   return (
     <>
-      <h2>Select course: </h2>
+      {!authorize && <Navigate to="/user-login" />}
       <div className="container grades">
+        <h2>Select course: </h2>
         <div className="delete-form-page">
           <select onChange={(e) => handleSelectCourse(e.target.value)}>
             <option>Select course:</option>

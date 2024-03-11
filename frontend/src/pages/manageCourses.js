@@ -24,8 +24,6 @@ const ManageCourses = () => {
       } else {
         console.error("Error fetching departments:", json.error);
       }
-
-      console.log(json);
     };
 
     fetchDepartments();
@@ -45,7 +43,6 @@ const ManageCourses = () => {
   const addCourseToDb = async (e) => {
     e.preventDefault();
     const newCourse = { title, description, department };
-    console.log(newCourse);
 
     const response = await fetch("/api/courses", {
       method: "POST",
@@ -64,7 +61,6 @@ const ManageCourses = () => {
       setDescription("");
       setDepartment("");
       setError(null);
-      console.log("Course was created.");
       courseDispatch({ type: "CREATE_COURSE", payload: json });
     }
   };
@@ -76,7 +72,6 @@ const ManageCourses = () => {
     const json = await response.json();
 
     if (response.ok) {
-      console.log(json, "was deleted successfully");
       courseDispatch({ type: "DELETE_COURSE", payload: json });
     }
 

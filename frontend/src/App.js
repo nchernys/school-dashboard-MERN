@@ -24,7 +24,7 @@ function MainApp() {
             <Route path="/manage-courses" element={<ManageCourses />} />
             <Route path="/manage-assignments" element={<ManageAssignments />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="/user-login" element={<LoginPage />} />
           </Routes>
         </div>
       </BrowserRouter>

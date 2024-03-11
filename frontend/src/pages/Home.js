@@ -60,7 +60,6 @@ const Home = () => {
 
   return (
     <>
-      {!authorize && <Navigate to="/login" />}
       <div className="container">
         <h2>Students</h2>
         <div className="forms">

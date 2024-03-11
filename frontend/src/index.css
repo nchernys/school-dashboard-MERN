@@ -107,6 +107,10 @@ form.form {
   margin: 0 0 3em;
 }
 
+.assignments form {
+  margin: 0;
+}
+
 form.form input,
 form.form button {
   margin: 0.5em 0;
@@ -229,4 +233,13 @@ form.form button {
   padding: 0.5em;
   font-size: 1em;
   width: 8em;
+}
+
+button:active {
+  transform: translateY(2px);
+}
+
+.login-error-msg {
+  color: var(--delete-red);
+  margin: 0 0 0.5em;
 }

@@ -8,7 +8,6 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
   const [registrationError, setRegistationError] = useState(false);
 
   function verifyPassword(str) {
@@ -20,9 +19,9 @@ const RegisterPage = () => {
     const checkPass = verifyPassword(password);
     if (checkPass) {
       setRegistationError(false);
-      const newUser = { username, password, role };
+      const newUser = { username, password };
 
-      const response = await fetch("/api/users/", {
+      const response = await fetch("/api/users", {
         method: "POST",
         body: JSON.stringify(newUser),
         headers: { "Content-Type": "application/json" },
@@ -37,7 +36,6 @@ const RegisterPage = () => {
       if (response.ok) {
         setUsername("");
         setPassword("");
-        setRole("");
         navigate("/");
       }
     } else {
@@ -62,12 +60,7 @@ const RegisterPage = () => {
             onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
-          <select onChange={(e) => setRole(e.target.value)}>
-            <option>Select role:</option>
-            <option value="admin">Admin</option>
-            <option value="instructor">Instructor</option>
-            <option value="student">Student</option>
-          </select>
+
           <button>Register</button>
         </form>
         {registrationError && (

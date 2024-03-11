@@ -63,7 +63,7 @@ const AddAssignmentToCourse = ({
 
   return (
     <>
-      <div className="form">
+      <div className="form assignments">
         <h2>Add an Assignment</h2>
         <form onSubmit={(e) => handleAddNewAssignment(e)}>
           <input
