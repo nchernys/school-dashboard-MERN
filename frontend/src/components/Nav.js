@@ -20,21 +20,26 @@ const Nav = () => {
 
   return (
     <div className="nav">
-      <Link to="/">
-        <p>Manage Students</p>
-      </Link>
-      <Link to="/manage-courses">
-        <p>Manage Courses</p>
-      </Link>
-      <Link to="/courses-add-remove">
-        <p>Enroll</p>
-      </Link>
-      <Link to="/manage-assignments">
-        <p>Gradebook (Log-in) </p>
-      </Link>
-      <Link to="/">
-        <p onClick={handleLogout}>Logout</p>
-      </Link>
+      <div className="nav-left">
+        <Link to="/">
+          <p>Manage Students</p>
+        </Link>
+        <Link to="/manage-courses">
+          <p>Manage Courses</p>
+        </Link>
+        <Link to="/courses-add-remove">
+          <p>Enroll</p>
+        </Link>
+        <Link to="/manage-assignments">
+          <p>Gradebook (Log-in) </p>
+        </Link>
+        <Link to="/">
+          <p onClick={handleLogout}>Logout</p>
+        </Link>
+      </div>
+      <div className="nav-right">
+        <a href="https://portfolio.chernysn.tech">WebDev</a>
+      </div>
     </div>
   );
 };

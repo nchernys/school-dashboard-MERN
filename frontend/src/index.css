@@ -26,12 +26,30 @@ body {
   align-items: center;
   background-color: black;
   box-sizing: border-box;
+  justify-content: space-between;
 }
 
-.nav a {
+.nav-left {
+  width: 90%;
+  display: flex;
+}
+
+.nav-right {
+  display: flex;
+  width: 10%;
+  justify-content: flex-end;
+}
+
+.nav-left a {
   text-decoration: none;
   color: white;
   margin: 0 2em 0 0;
+}
+
+.nav-right a {
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+  text-decoration: none;
 }
 
 .pages {
@@ -184,9 +202,6 @@ form.form button {
   color: white;
 }
 
-.popup form.form {
-  border: 3px red solid;
-}
 .popup h2 {
   padding: 0;
   margin: 0.5em 0;
