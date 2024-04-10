@@ -15,6 +15,13 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.0"
   },
+  "scripts": {
+    "test": "react-scripts test",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "start": "react-scripts start",
+    "dev": "nodemon server.js"
+  },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21"
