@@ -8,8 +8,8 @@
     "install-frontend": "cd frontend && npm install",
     "heroku-postbuild": "npm run install-frontend && npm run build",
     "server": "nodemon backend/server.js",
-    "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix frontend\"",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix frontend\""
+    "start": "npm run server & npm run start-frontend",
+    "start-frontend": "cd frontend && npm start"
   },
   "keywords": [],
   "author": "",
@@ -17,8 +17,5 @@
   "engines": {
     "node": ">=20.0.0",
     "npm": ">=7.0.0"
-  },
-  "devDependencies": {
-    "concurrently": "^8.2.2"
   }
 }
