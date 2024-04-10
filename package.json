@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
-  "scripts": {
-    "build": "cd frontend && npm run build",
-    "install-frontend": "cd frontend && npm install",
-    "heroku-postbuild": "npm run install-frontend && npm run build",
-    "server": "nodemon backend/server.js",
-    "start": "npm run server & npm run start-frontend",
-    "start-frontend": "cd frontend && npm start"
-  },
+"scripts": {
+  "build": "cd frontend && npm run build",
+  "install-frontend": "cd frontend && npm install",
+  "heroku-postbuild": "npm run install-frontend && npm run build",
+  "server": "nodemon backend/server.js",
+  "start": "npm run server & npm run start-frontend",
+  "start-frontend": "cd frontend && npm start"
+},
+
   "keywords": [],
   "author": "",
   "license": "ISC",
