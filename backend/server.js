@@ -15,8 +15,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, "../build")));
-
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
@@ -29,17 +27,19 @@ app.use("/api/assignments", assignmentsRoutes);
 app.use("/api/grades", gradesRoutes);
 app.use("/api/users", usersRoutes);
 
+app.use(express.static(path.join(__dirname, "../frontend/build")));
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+  res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
 });
 
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     app.listen(process.env.PORT, () => {
-      console.log(`connected to DB & listening on port ___`);
+      console.log(`connected to DB & listening on port 4000`);
     });
   })
   .catch((error) => {
-    error;
+    console.error("Error connecting to MongoDB:", error);
+    process.exit(1); // Exit the process if unable to connect to the database
   });
