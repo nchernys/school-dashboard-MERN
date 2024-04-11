@@ -28,9 +28,6 @@ app.use("/api/grades", gradesRoutes);
 app.use("/api/users", usersRoutes);
 
 app.use(express.static(path.join(__dirname, "../frontend/build")));
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend", "build", "index.html"));
-});
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -43,3 +40,7 @@ mongoose
     console.error("Error connecting to MongoDB:", error);
     process.exit(1); // Exit the process if unable to connect to the database
   });
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend", "build", "index.html"));
+});

@@ -2,16 +2,12 @@
   "name": "mern_school_dashboard",
   "version": "1.0.0",
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
-  "main": "index.js",
-"scripts": {
-  "build": "cd frontend && npm run build",
-  "install-frontend": "cd frontend && npm install",
-  "heroku-postbuild": "npm run install-frontend && npm run build",
-  "server": "nodemon backend/server.js",
-  "start": "npm run server & npm run start-frontend",
-  "start-frontend": "cd frontend && npm start"
-},
-
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",
+    "build": "npm run build --prefix frontend"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
