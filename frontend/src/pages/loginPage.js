@@ -11,12 +11,18 @@ const LoginPage = () => {
   const [showLoginErrorMessage, setShowLoginErrorMessage] = useState("");
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-
-    if (storedToken) {
-      authorizeDispatch({ type: "SET_AUTH", payload: true });
+    const storedAuthorize = localStorage.getItem("toekn");
+    if (storedAuthorize) {
+      authorizeDispatch({
+        type: "SET_AUTH",
+        payload: JSON.parse(storedAuthorize),
+      });
     }
-  }, [authorizeDispatch, authorize]);
+  }, [authorizeDispatch]);
+
+  useEffect(() => {
+    localStorage.setItem("token", JSON.stringify(authorize));
+  }, [authorize]);
 
   const handleSubmitLoginForm = async (e) => {
     e.preventDefault();
@@ -28,12 +34,12 @@ const LoginPage = () => {
     const json = await response.json();
 
     if (!response.ok) {
-      console.log("REPSPONSE NOT OK", json.error);
+      console.log(json.error);
+      setShowLoginErrorMessage(true);
     } else {
       setUsername("");
       setPassword("");
       authorizeDispatch({ type: "SET_AUTH", payload: true });
-      console.log("JSON", json);
     }
   };
 
@@ -46,7 +52,7 @@ const LoginPage = () => {
             <h2>Login</h2>
             {showLoginErrorMessage && (
               <div className="login-error-msg">
-                The username or the password are incorrect.
+                The username or password is incorrect.
               </div>
             )}
             <form onSubmit={(e) => handleSubmitLoginForm(e)}>

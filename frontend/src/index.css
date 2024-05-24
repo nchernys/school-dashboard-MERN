@@ -152,6 +152,9 @@ form.form button {
   padding: 0.5em 1em;
 }
 
+.password-warning {
+  color: var(--delete-red)
+}
 .dropdown {
   width: 10em;
 }

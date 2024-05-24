@@ -33,9 +33,11 @@ const Nav = () => {
         <Link to="/manage-assignments">
           <p>Gradebook (Log-in) </p>
         </Link>
-        <Link to="/">
-          <p onClick={handleLogout}>Logout</p>
-        </Link>
+        {authorize && (
+          <Link to="/">
+            <p onClick={handleLogout}>Logout</p>
+          </Link>
+        )}
       </div>
       <div className="nav-right">
         <a href="https://nchernysheva.com">WebDev</a>

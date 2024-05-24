@@ -23,6 +23,20 @@ const ManageAssignments = () => {
   const [description, setDescription] = useState("");
 
   useEffect(() => {
+    const storedAuthorize = localStorage.getItem("token");
+    if (storedAuthorize === true) {
+      authorizeDispatch({
+        type: "SET_AUTH",
+        payload: storedAuthorize,
+      });
+    }
+  }, [authorizeDispatch]);
+
+  useEffect(() => {
+    localStorage.setItem("token", authorize);
+  }, [authorize]);
+
+  useEffect(() => {
     const fetchCourses = async () => {
       const response = await fetch("/api/courses");
       const json = await response.json();
@@ -95,7 +109,7 @@ const ManageAssignments = () => {
       );
       setThisCourseGrades(collectCourseGrades);
     } catch (error) {
-      console.error("Error in handleSelectCourse:", error);
+      console.error(error);
     }
   };
 
@@ -127,8 +141,6 @@ const ManageAssignments = () => {
 
       if (!resGradeThis.ok) {
         console.log(jsonGradeThis.error);
-      } else {
-        console.log(jsonGradeThis, "new grade created");
       }
     } else if (thisGrade.length > 0 && score !== "") {
       const resGradeThis = await fetch(`/api/grades/${thisGrade[0]._id}`, {
@@ -136,12 +148,6 @@ const ManageAssignments = () => {
         body: JSON.stringify({ score: score }),
         headers: { "Content-Type": "application/json" },
       });
-
-      if (!resGradeThis.ok) {
-        console.log("Error updating the grade");
-      } else {
-        console.log("The grade was updated");
-      }
     }
 
     handleCalculateAverage();

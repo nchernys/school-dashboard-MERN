@@ -28,15 +28,13 @@ const RegisterPage = () => {
       });
 
       const json = await response.json();
-
-      console.log(json);
       if (!response.ok) {
         console.log(json.error);
       }
       if (response.ok) {
         setUsername("");
         setPassword("");
-        navigate("/");
+        navigate("/manage-assignments");
       }
     } else {
       setRegistationError(true);
@@ -48,7 +46,7 @@ const RegisterPage = () => {
       <div className="form">
         <h2>Registration</h2>
         <form onSubmit={(e) => handleSubmitRegisterForm(e)}>
-          <label>Register:</label>
+          <label>Login:</label>
           <input
             type="text"
             onChange={(e) => setUsername(e.target.value)}
@@ -60,11 +58,17 @@ const RegisterPage = () => {
             onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
-
           <button>Register</button>
         </form>
+        <div className="password-warning">
+          Password should contain at least one upper case, one digit, and no
+          white spaces.
+        </div>
         {registrationError && (
-          <div>Your login or password were incorrect. Try again...</div>
+          <div>
+            Your password should contain at least one upper case, one digit, and
+            no white spaces. Please try again!
+          </div>
         )}
       </div>
     </div>
