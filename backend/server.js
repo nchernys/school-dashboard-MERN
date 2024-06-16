@@ -32,8 +32,8 @@ app.use(express.static(path.join(__dirname, "../frontend/build")));
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
-    app.listen(process.env.PORT, () => {
-      console.log(`connected to DB & listening on port 4000`);
+    app.listen(process.env.PORT || 4004, () => {
+      console.log(`connected to DB & listening on port 4004`);
     });
   })
   .catch((error) => {
